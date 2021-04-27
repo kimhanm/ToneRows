@@ -87,6 +87,9 @@ pc2Note n = head  [ Note l a
                   , pitchClass (Note l a) == n
                   ]
 
+pcs2Notes :: PCSet -> Notes
+pcs2Notes = map pc2Note
+
 
 
 --  --  Strings -> Classical/ToneRows --  -- 
@@ -179,8 +182,9 @@ transpose n = (map (`mod` 12)) . (map (+ n))
 retrograde :: PCSet -> PCSet
 retrograde = reverse
 
-inversion :: PCSet
-inversion = undefined
+inverse :: PCSet -> PCSet
+inverse []      = []
+inverse (x:xs)  = transpose (2 * x) $ map ((-) 12) (x:xs)
 
 
 -- Finding the interval symmetric tone rows
@@ -201,10 +205,18 @@ inversion = undefined
 -- sorted in ascending order, minimizing largest interval
 normalForm :: PCSet -> PCSet
 normalForm = undefined
-intervalClasses [] = []
-intervalClasses (x:xs) = L.sort [x - y `mod` 12 | y <- xs] ++ intervalClasses xs
+
+
+ intervalClasses [] = []
+ intervalClasses = undefined
+--intervalClasses (x:xs) = L.sort [x - y `mod` 12 | y <- xs] ++ intervalClasses xs
 
 -- divides the 12 notes into two symmetric partitions
 -- the interval classes of each partition are the same
 sympartition :: ([PitchClass],[PitchClass])
 sympartition = undefined
+
+
+
+
+
